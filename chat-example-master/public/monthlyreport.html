@@ -1,0 +1,286 @@
+
+<html>
+<head> <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Multi Campus Energy Monitoring System</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-metro.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-win8.css">
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+	<style>
+	.dbutton {
+transition-duration: 0.4s;
+  border-radius: 4px;
+  
+   height:28px;
+}
+.jumbo
+{
+align:center;
+background-color:#ffffd4;
+height:80px;
+text-align:center;
+text-top:100px;
+}
+.select{
+padding-top:0px;
+}
+.drop{
+transition-duration: 0.4s;
+  border-radius: 4px;
+width:180px;
+ height:30px ;
+
+}
+#mnth{
+visibility:true;
+}
+
+#report{
+visibility:hidden;
+
+}
+
+</style>	
+
+<style>
+table, th, td {
+  border: 1px solid black;
+  
+}
+table {
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+	
+}
+</style>
+</head>
+<body>
+
+
+      <div class="jumbo w3-animate-right" align="center" >
+        <h2 class="select" >Monthly Report</h2>
+</div>
+	<br>
+	<br>
+<center>
+   <select name="m1" id="mnth" placeholder="Month1" class="drop" >
+     <option value="1">January</option>
+    <option value="2">Febraury</option>
+    <option value="3" >March</option>
+	<option value="4">April</option>
+	<option value="5">May</option>
+	<option value="6">June</option>
+	<option value="7">July</option>
+	<option value="8">August</option>
+	<option value="9">September</option>
+	<option value="10">October</option>
+	<option value="11">November</option>
+	<option value="12">December</option>
+  </select>
+ </center>
+ <br>
+ <center>
+ <button id="btn" onclick="disable()">Generate Report</button>
+ </center>
+ <div id="report">
+ <div class="l1" style="float:left;padding-left:100px;">
+<div class="row">
+ <div class="col-sm-6">
+<table id="tab" style="width:100%; align:left; ">
+  <tr>
+    <th>Meter ID</th>
+    <th>Meter Name</th>
+    <th>Energy Consumption(Kwh)</th>
+  </tr>
+  <tr id="c2">
+    <td >2</td>
+	<td>GPR memorial</td>
+	<td id="e2" ></td>
+  </tr>
+   <tr id="c3">
+    <td>3</td>
+	<td>Admin 1</td>
+	<td id="e3"></td>
+  </tr>
+   <tr>
+    <td>4</td>
+	<td>Admin 2</td>
+	<td id="e4"></td>
+  </tr>
+   <tr>
+    <td>5</td>
+	<td>IT part 1</td>
+	<td id="e5"></td>
+  </tr>
+   <tr>
+    <td>6</td>
+	<td>EEE, ECE Hostel, CSE</td>
+	<td id="e6"></td>
+  </tr>
+   <tr>
+    <td>7</td>
+	<td>Generator bypass</td>
+	<td id="e7"></td>
+  </tr>
+   <tr>
+    <td>8</td>
+	<td>IT F block</td>
+	<td id="e8"></td>
+  </tr>
+   <tr>
+    <td>9</td>
+	<td>Auditorium H block</td>
+	<td id="e9"></td>
+  </tr>
+   <tr>
+    <td>10</td>
+	<td>Canteen motors</td>
+	<td id="e10"></td>
+  </tr>
+   <tr>
+    <td>11</td>
+	<td>Capacitor Bank</td>
+	<td id="e11"></td>
+  </tr>
+
+  
+  
+</table>
+</div>
+</div>
+</div>
+
+<div class="r1" style="float:right; padding-right:100px;">
+<div id="meter">
+	<div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+</div>
+</div>	
+</div>
+</body>
+<script>
+var arr=[];
+var gnits_socket = io.connect();
+gnits_socket.on('guage', function(mdata){
+var energy=mdata[0];
+var en=energy.con;
+en.toFixed(0);
+var data = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value:en,
+    title: { text: "Energy Consumed(in KWh)" },
+    type: "indicator",
+    mode: "gauge+number",
+    delta: { reference:1000 },
+    gauge: { axis: { range: [null, 12000000] } }
+  }
+];
+var layout = { width: 500, height: 300 };
+Plotly.newPlot('myDiv', data, layout);
+});
+var energy_socket = io.connect();
+energy_socket.on('enm2', function(mdata){
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e2').innerHTML=x;
+arr[0]=x;
+});
+
+energy_socket.on('enm3', function(mdata){
+
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e3').innerHTML=x;
+arr[1]=x;
+});
+
+energy_socket.on('enm4', function(mdata){
+
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e4').innerHTML=x;
+arr[2]=x;
+});
+
+energy_socket.on('enm5', function(mdata){
+
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e5').innerHTML=x;
+arr[3]=x;
+});
+
+energy_socket.on('enm6', function(mdata){
+
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e6').innerHTML=x;
+arr[4]=x;
+});
+
+energy_socket.on('enm7', function(mdata){
+
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e7').innerHTML=x;
+arr[5]=x;
+});
+
+energy_socket.on('enm8', function(mdata){
+
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e8').innerHTML=x;
+arr[6]=x;
+});
+
+energy_socket.on('enm9', function(mdata){
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e9').innerHTML=x;
+arr[7]=x;
+});
+
+energy_socket.on('enm10', function(mdata){
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e10').innerHTML=x;
+arr[8]=x;
+});
+
+energy_socket.on('enm11', function(mdata){
+var x=mdata[0].con;
+x=Math.round(x);
+document.getElementById('e11').innerHTML=x;
+arr[9]=x;
+arr.sort();
+	    //console.log(document.getElementById('e11').value);
+});
+/*for(var i=0;i<arr.length;i++)
+{
+   for(var j=2;j<=11;j++)
+   {*/
+     // var s="e"+2;
+	  //if(document.getElementById(s).value==arr[i])
+
+  // }//
+//}//
+</script>
+<script>
+function disable()
+{
+document.getElementById("mnth").style.visibility="hidden";
+document.getElementById("btn").style.visibility="hidden";
+document.getElementById("report").style.visibility="visible";
+
+	   
+
+}
+
+</script>
+</html>

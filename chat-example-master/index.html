@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+  </head>
+  <body>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+//<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+
+    var socket = io();
+
+      socket.on('changed', function(data){
+	  for(var rid in data)
+	  {
+        document.write(data[rid].meter_ID);
+      }
+   
+  });
+
+</script>
+  </body>
+</html>

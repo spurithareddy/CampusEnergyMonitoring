@@ -1,0 +1,833 @@
+
+<!DOCTYPE html>
+<html lang="">
+<head> <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meter data from GNITS</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+crossorigin="anonymous">
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-metro.css">
+
+<style>
+.meter {
+  padding: 10px;
+}
+</style>
+<style>
+  .row{
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .col-sm-6{
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2">
+        <img src='gnits.png' width="80%" >
+      </div>
+      <div class="col-sm-10" align="left">
+        <p style="padding-top: 10px">
+        <h2> Campus Energy Monitoring System </h2>
+          <p style="padding-top: 10px"> Campus of GNITS </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+
+  <p style="padding-top: 10px">  </p>
+  <div class = "row w3-flat-silver" align="left" style="padding-left:10px">
+    <p ><a href="http://cems.iith.ac.in/home.html"> <i class="fa fa-home" aria-hidden="true"></i> Home </a>
+    &nbsp  > &nbsp <a href="http://cems.iith.ac.in/gnits/gnitsoverview.html"><i class="fa fa-1x fa-university" aria-hidden="true"  style="padding-top:8px"></i> GNITS </a>
+    &nbsp  > &nbsp <a href="http://cems.iith.ac.in/gnits/gnitsoverview.html"><i class="fa fa-1x fa-globe" aria-hidden="true"  style="padding-top:8px"></i> Overview</a>
+      &nbsp <a href="http://cems.iith.ac.in/gnits/gnitsmicrogrid.html"><i class="fa fa-plug" aria-hidden="true"></i> Mircrogrid</a>
+      &nbsp <a href="http://cems.iith.ac.in/gnits/gnitskeyinfo.html"><i class="fa fa-key" aria-hidden="true"></i> Key Info</a>
+      &nbsp <a href="http://cems.iith.ac.in/gnits/gnitsmeterdata2.html"><i class="fa fa-clock-o" aria-hidden="true"></i> Realtime data</a>
+      &nbsp <a href="http://cems.iith.ac.in/gnits/gnitshist.html"><i class="fa fa-database" aria-hidden="true"></i> Historical data</a>
+      &nbsp <a href="http://cems.iith.ac.in/gnits/gnitscasestudies.html"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Case Studies</a></p>
+  </div>
+</div>
+
+
+<div class="container">
+
+<div class="row">
+ <div class="col-sm-6">
+<table border='4' style="text-align:center">
+<tr>
+<td colspan=2> Meter Name: </td>
+<td id='mid0' colspan=5>  Loading .... !</td>
+</tr>
+<tr> <td colspan=2> Timestamp: </td><td id='tstamp0' colspan=5>  </td></tr>
+<tr> <td colspan=2> Meter Location: </td><td id='SSname0' colspan=5> </td></tr>
+
+<tr><td> Description: </td><td colspan=6> GPR Memorial </td></tr>
+<tr>
+<td> Parameter </td>
+<td> R-ph </td>
+<td> Y-ph </td>
+<td> B-ph </td>
+<td> Average </td>
+<td> Total </td>
+<td> Unit </td>
+</tr>
+<tr>
+<td> Power </td>
+<td id='Pr0'>  </td>
+<td id='Py0'>  </td>
+<td id='Pb0'>  </td>
+<td> - </td>
+<td id='Pt0'>  </td>
+<td> kW </td>
+</tr>
+<tr>
+  <td> Power Factor</td>
+  <td id='PFr0'>  </td>
+  <td id='PFy0'>  </td>
+  <td id='PFb0'>  </td>
+  <td id='PFa0'>  </td>
+  <td> - </td>
+  <td> - </td>
+</tr>
+
+
+<tr>
+    <td> Apparent Power </td>
+    <td id='Sr0'>  </td>
+    <td id='Sy0'>  </td>
+    <td id='Sb0'>  </td>
+    <td > - </td>
+    <td id='St0'>  </td>
+    <td> kVA </td>
+</tr>
+
+<tr>
+    <td> Line Voltages </td>
+    <td id='Vry0'>  </td>
+    <td id='Vyb0'>  </td>
+    <td id='Vbr0'>  </td>
+    <td id='VLa0'>  </td>
+    <td> - </td>
+    <td> V </td>
+</tr>
+
+<tr>
+<td> Phase Voltages </td>
+<td id='vr0'>  </td>
+<td id='vy0'>  </td>
+<td id='vb0'>  </td>
+<td id='va0'>  </td>
+<td> - </td>
+<td> V </td>
+</tr>
+
+<tr>
+<td> Line Currents </td>
+<td id='Ir0'>  </td>
+<td id='Iy0'>  </td>
+<td id='Ib0'>  </td>
+<td id='Ia0'>  </td>
+<td id='It0'>  </td>
+<td> A </td>
+</tr>
+
+
+<tr>
+<td> Frequency </td>
+<td colspan=5 id='freq0'>  </td>
+<td> Hz </td>
+</tr>
+
+
+<tr>
+<td> Cumulative Energy </td>
+<td colspan=5 id='cume0'>  </td>
+<td> kWH </td>
+</tr>
+</table>
+
+</div>
+
+<div class="col-sm-6">
+<table border='2' style="text-align:center">
+<tr>
+<td colspan=2> Meter Name: </td>
+<td id='mid1' colspan=5>  Loading .... !</td>
+</tr>
+<tr> <td colspan=2> Timestamp: </td><td id='tstamp1' colspan=5>  </td></tr>
+<tr> <td colspan=2> Meter Location: </td><td id='SSname1' colspan=5> </td></tr>
+
+<tr><td> Description: </td><td colspan=6> Admin Block 1 </td></tr>
+<tr>
+<td> Parameter </td>
+<td> R-ph </td>
+<td> Y-ph </td>
+<td> B-ph </td>
+<td> Average </td>
+<td> Total </td>
+<td> Unit </td>
+</tr>
+<tr>
+<td> Power </td>
+<td id='Pr1'>  </td>
+<td id='Py1'>  </td>
+<td id='Pb1'>  </td>
+<td> - </td>
+<td id='Pt1'>  </td>
+<td> kW </td>
+</tr>
+<tr>
+  <td> Power Factor</td>
+  <td id='PFr1'>  </td>
+  <td id='PFy1'>  </td>
+  <td id='PFb1'>  </td>
+  <td id='PFa1'>  </td>
+  <td> - </td>
+  <td> - </td>
+</tr>
+
+
+<tr>
+    <td> Apparent Power </td>
+    <td id='Sr1'>  </td>
+    <td id='Sy1'>  </td>
+    <td id='Sb1'>  </td>
+    <td > - </td>
+    <td id='St1'>  </td>
+    <td> kVA </td>
+</tr>
+
+<tr>
+    <td> Line Voltages </td>
+    <td id='Vry1'>  </td>
+    <td id='Vyb1'>  </td>
+    <td id='Vbr1'>  </td>
+    <td id='VLa1'>  </td>
+    <td> - </td>
+    <td> V </td>
+</tr>
+
+<tr>
+<td> Phase Voltages </td>
+<td id='vr1'>  </td>
+<td id='vy1'>  </td>
+<td id='vb1'>  </td>
+<td id='va1'>  </td>
+<td> - </td>
+<td> V </td>
+</tr>
+
+<tr>
+<td> Line Currents </td>
+<td id='Ir1'>  </td>
+<td id='Iy1'>  </td>
+<td id='Ib1'>  </td>
+<td id='Ia1'>  </td>
+<td id='It1'>  </td>
+<td> A </td>
+</tr>
+
+
+<tr>
+<td> Frequency </td>
+<td colspan=5 id='freq1'>  </td>
+<td> Hz </td>
+</tr>
+
+
+<tr>
+<td> Cumulative Energy </td>
+<td colspan=5 id='cume1'>  </td>
+<td> kWH </td>
+</tr>
+</table>
+</div >
+
+</div>
+
+<div class="row">
+ <div class="col-sm-6">
+<table border='2' style="text-align:center">
+<tr>
+<td colspan=2> Meter Name: </td>
+<td id='mid2' colspan=5>  Loading .... !</td>
+</tr>
+<tr> <td colspan=2> Timestamp: </td><td id='tstamp2' colspan=5>  </td></tr>
+<tr> <td colspan=2> Meter Location: </td><td id='SSname2' colspan=5> </td></tr>
+
+<tr><td> Description: </td><td colspan=6> Admin Block 2 </td></tr>
+<tr>
+<td> Parameter </td>
+<td> R-ph </td>
+<td> Y-ph </td>
+<td> B-ph </td>
+<td> Average </td>
+<td> Total </td>
+<td> Unit </td>
+</tr>
+<tr>
+<td> Power </td>
+<td id='Pr2'>  </td>
+<td id='Py2'>  </td>
+<td id='Pb2'>  </td>
+<td> - </td>
+<td id='Pt2'>  </td>
+<td> kW </td>
+</tr>
+<tr>
+  <td> Power Factor</td>
+  <td id='PFr2'>  </td>
+  <td id='PFy2'>  </td>
+  <td id='PFb2'>  </td>
+  <td id='PFa2'>  </td>
+  <td> - </td>
+  <td> - </td>
+</tr>
+
+
+<tr>
+    <td> Apparent Power </td>
+    <td id='Sr2'>  </td>
+    <td id='Sy2'>  </td>
+    <td id='Sb2'>  </td>
+    <td > - </td>
+    <td id='St2'>  </td>
+    <td> kVA </td>
+</tr>
+
+<tr>
+    <td> Line Voltages </td>
+    <td id='Vry2'>  </td>
+    <td id='Vyb2'>  </td>
+    <td id='Vbr2'>  </td>
+    <td id='VLa2'>  </td>
+    <td> - </td>
+    <td> V </td>
+</tr>
+
+<tr>
+<td> Phase Voltages </td>
+<td id='vr2'>  </td>
+<td id='vy2'>  </td>
+<td id='vb2'>  </td>
+<td id='va2'>  </td>
+<td> - </td>
+<td> V </td>
+</tr>
+
+<tr>
+<td> Line Currents </td>
+<td id='Ir2'>  </td>
+<td id='Iy2'>  </td>
+<td id='Ib2'>  </td>
+<td id='Ia2'>  </td>
+<td id='It2'>  </td>
+<td> A </td>
+</tr>
+
+
+<tr>
+<td> Frequency </td>
+<td colspan=5 id='freq2'>  </td>
+<td> Hz </td>
+</tr>
+
+
+<tr>
+<td> Cumulative Energy </td>
+<td colspan=5 id='cume2'>  </td>
+<td> kWH </td>
+</tr>
+</table>
+
+</div>
+
+<div class="col-sm-6">
+<table border='2' style="text-align:center">
+<tr>
+<td colspan=2> Meter Name: </td>
+<td id='mid3' colspan=5>  Loading .... !</td>
+</tr>
+<tr> <td colspan=2> Timestamp: </td><td id='tstamp3' colspan=5>  </td></tr>
+<tr> <td colspan=2> Meter Location: </td><td id='SSname3' colspan=5> </td></tr>
+
+<tr><td> Description: </td><td colspan=6> - - - - - - - - - - - - </td></tr>
+<tr>
+<td> Parameter </td>
+<td> R-ph </td>
+<td> Y-ph </td>
+<td> B-ph </td>
+<td> Average </td>
+<td> Total </td>
+<td> Unit </td>
+</tr>
+<tr>
+<td> Power </td>
+<td id='Pr3'>  </td>
+<td id='Py3'>  </td>
+<td id='Pb3'>  </td>
+<td> - </td>
+<td id='Pt3'>  </td>
+<td> kW </td>
+</tr>
+<tr>
+  <td> Power Factor</td>
+  <td id='PFr3'>  </td>
+  <td id='PFy3'>  </td>
+  <td id='PFb3'>  </td>
+  <td id='PFa3'>  </td>
+  <td> - </td>
+  <td> - </td>
+</tr>
+
+
+<tr>
+    <td> Apparent Power </td>
+    <td id='Sr3'>  </td>
+    <td id='Sy3'>  </td>
+    <td id='Sb3'>  </td>
+    <td > - </td>
+    <td id='St3'>  </td>
+    <td> kVA </td>
+</tr>
+
+<tr>
+    <td> Line Voltages </td>
+    <td id='Vry3'>  </td>
+    <td id='Vyb3'>  </td>
+    <td id='Vbr3'>  </td>
+    <td id='VLa3'>  </td>
+    <td> - </td>
+    <td> V </td>
+</tr>
+
+<tr>
+<td> Phase Voltages </td>
+<td id='vr3'>  </td>
+<td id='vy3'>  </td>
+<td id='vb3'>  </td>
+<td id='va3'>  </td>
+<td> - </td>
+<td> V </td>
+</tr>
+
+<tr>
+<td> Line Currents </td>
+<td id='Ir3'>  </td>
+<td id='Iy3'>  </td>
+<td id='Ib3'>  </td>
+<td id='Ia3'>  </td>
+<td id='It3'>  </td>
+<td> A </td>
+</tr>
+
+
+<tr>
+<td> Frequency </td>
+<td colspan=5 id='freq3'>  </td>
+<td> Hz </td>
+</tr>
+
+
+<tr>
+<td> Cumulative Energy </td>
+<td colspan=5 id='cume3'>  </td>
+<td> kWH </td>
+</tr>
+</table>
+</div >
+</div>
+
+<div class="row">
+ <div class="col-sm-6">
+<table border='2' style="text-align:center">
+<tr>
+<td colspan=2> Meter Name: </td>
+<td id='mid4' colspan=5>  Loading .... !</td>
+</tr>
+<tr> <td colspan=2> Timestamp: </td><td id='tstamp4' colspan=5>  </td></tr>
+<tr> <td colspan=2> Meter Location: </td><td id='SSname4' colspan=5> </td></tr>
+
+<tr><td> Description: </td><td colspan=6> - - - - - - - - - - - - </td></tr>
+<tr>
+<td> Parameter </td>
+<td> R-ph </td>
+<td> Y-ph </td>
+<td> B-ph </td>
+<td> Average </td>
+<td> Total </td>
+<td> Unit </td>
+</tr>
+<tr>
+<td> Power </td>
+<td id='Pr4'>  </td>
+<td id='Py4'>  </td>
+<td id='Pb4'>  </td>
+<td> - </td>
+<td id='Pt4'>  </td>
+<td> kW </td>
+</tr>
+<tr>
+  <td> Power Factor</td>
+  <td id='PFr4'>  </td>
+  <td id='PFy4'>  </td>
+  <td id='PFb4'>  </td>
+  <td id='PFa4'>  </td>
+  <td> - </td>
+  <td> - </td>
+</tr>
+
+
+<tr>
+    <td> Apparent Power </td>
+    <td id='Sr4'>  </td>
+    <td id='Sy4'>  </td>
+    <td id='Sb4'>  </td>
+    <td > - </td>
+    <td id='St4'>  </td>
+    <td> kVA </td>
+</tr>
+
+<tr>
+    <td> Line Voltages </td>
+    <td id='Vry4'>  </td>
+    <td id='Vyb4'>  </td>
+    <td id='Vbr4'>  </td>
+    <td id='VLa4'>  </td>
+    <td> - </td>
+    <td> V </td>
+</tr>
+
+<tr>
+<td> Phase Voltages </td>
+<td id='vr4'>  </td>
+<td id='vy4'>  </td>
+<td id='vb4'>  </td>
+<td id='va4'>  </td>
+<td> - </td>
+<td> V </td>
+</tr>
+
+<tr>
+<td> Line Currents </td>
+<td id='Ir4'>  </td>
+<td id='Iy4'>  </td>
+<td id='Ib4'>  </td>
+<td id='Ia4'>  </td>
+<td id='It4'>  </td>
+<td> A </td>
+</tr>
+
+
+<tr>
+<td> Frequency </td>
+<td colspan=5 id='freq4'>  </td>
+<td> Hz </td>
+</tr>
+
+
+<tr>
+<td> Cumulative Energy </td>
+<td colspan=5 id='cume4'>  </td>
+<td> kWH </td>
+</tr>
+</table>
+</div>
+ <div class="col-sm-6">
+<table border='2' style="text-align:center">
+<tr>
+<td colspan=2> Meter Name: </td>
+<td id='mid5' colspan=5>  Loading .... !</td>
+</tr>
+<tr> <td colspan=2> Timestamp: </td><td id='tstamp5' colspan=5>  </td></tr>
+<tr> <td colspan=2> Meter Location: </td><td id='SSname5' colspan=5> </td></tr>
+
+<tr><td> Description: </td><td colspan=6> - - - - - - - - - - - - </td></tr>
+<tr>
+<td> Parameter </td>
+<td> R-ph </td>
+<td> Y-ph </td>
+<td> B-ph </td>
+<td> Average </td>
+<td> Total </td>
+<td> Unit </td>
+</tr>
+<tr>
+<td> Power </td>
+<td id='Pr5'>  </td>
+<td id='Py5'>  </td>
+<td id='Pb5'>  </td>
+<td> - </td>
+<td id='Pt5'>  </td>
+<td> kW </td>
+</tr>
+<tr>
+  <td> Power Factor</td>
+  <td id='PFr5'>  </td>
+  <td id='PFy5'>  </td>
+  <td id='PFb5'>  </td>
+  <td id='PFa5'>  </td>
+  <td> - </td>
+  <td> - </td>
+</tr>
+
+
+<tr>
+    <td> Apparent Power </td>
+    <td id='Sr5'>  </td>
+    <td id='Sy5'>  </td>
+    <td id='Sb5'>  </td>
+    <td > - </td>
+    <td id='St5'>  </td>
+    <td> kVA </td>
+</tr>
+
+<tr>
+    <td> Line Voltages </td>
+    <td id='Vry5'>  </td>
+    <td id='Vyb5'>  </td>
+    <td id='Vbr5'>  </td>
+    <td id='VLa5'>  </td>
+    <td> - </td>
+    <td> V </td>
+</tr>
+
+<tr>
+<td> Phase Voltages </td>
+<td id='vr5'>  </td>
+<td id='vy5'>  </td>
+<td id='vb5'>  </td>
+<td id='va5'>  </td>
+<td> - </td>
+<td> V </td>
+</tr>
+
+<tr>
+<td> Line Currents </td>
+<td id='Ir5'>  </td>
+<td id='Iy5'>  </td>
+<td id='Ib5'>  </td>
+<td id='Ia5'>  </td>
+<td id='It5'>  </td>
+<td> A </td>
+</tr>
+
+
+<tr>
+<td> Frequency </td>
+<td colspan=5 id='freq5'>  </td>
+<td> Hz </td>
+</tr>
+
+
+<tr>
+<td> Cumulative Energy </td>
+<td colspan=5 id='cume5'>  </td>
+<td> kWH </td>
+</tr>
+</table>
+
+</div>
+</div>
+
+
+<div class="row">
+ <div class="col-sm-6">
+<table border='2' style="text-align:center">
+<tr>
+<td colspan=2> Meter Name: </td>
+<td id='mid6' colspan=5>  Loading .... !</td>
+</tr>
+<tr> <td colspan=2> Timestamp: </td><td id='tstamp6' colspan=5>  </td></tr>
+<tr> <td colspan=2> Meter Location: </td><td id='SSname6' colspan=5> </td></tr>
+
+<tr><td> Description: </td><td colspan=6> - - - - - - - - - - - - </td></tr>
+<tr>
+<td> Parameter </td>
+<td> R-ph </td>
+<td> Y-ph </td>
+<td> B-ph </td>
+<td> Average </td>
+<td> Total </td>
+<td> Unit </td>
+</tr>
+<tr>
+<td> Power </td>
+<td id='Pr6'>  </td>
+<td id='Py6'>  </td>
+<td id='Pb6'>  </td>
+<td> - </td>
+<td id='Pt6'>  </td>
+<td> kW </td>
+</tr>
+<tr>
+  <td> Power Factor</td>
+  <td id='PFr6'>  </td>
+  <td id='PFy6'>  </td>
+  <td id='PFb6'>  </td>
+  <td id='PFa6'>  </td>
+  <td> - </td>
+  <td> - </td>
+</tr>
+
+
+<tr>
+    <td> Apparent Power </td>
+    <td id='Sr6'>  </td>
+    <td id='Sy6'>  </td>
+    <td id='Sb6'>  </td>
+    <td > - </td>
+    <td id='St6'>  </td>
+    <td> kVA </td>
+</tr>
+
+<tr>
+    <td> Line Voltages </td>
+    <td id='Vry6'>  </td>
+    <td id='Vyb6'>  </td>
+    <td id='Vbr6'>  </td>
+    <td id='VLa6'>  </td>
+    <td> - </td>
+    <td> V </td>
+</tr>
+
+<tr>
+<td> Phase Voltages </td>
+<td id='vr6'>  </td>
+<td id='vy6'>  </td>
+<td id='vb6'>  </td>
+<td id='va6'>  </td>
+<td> - </td>
+<td> V </td>
+</tr>
+
+<tr>
+<td> Line Currents </td>
+<td id='Ir6'>  </td>
+<td id='Iy6'>  </td>
+<td id='Ib6'>  </td>
+<td id='Ia6'>  </td>
+<td id='It6'>  </td>
+<td> A </td>
+</tr>
+
+
+<tr>
+<td> Frequency </td>
+<td colspan=5 id='freq6'>  </td>
+<td> Hz </td>
+</tr>
+
+
+<tr>
+<td> Cumulative Energy </td>
+<td colspan=5 id='cume6'>  </td>
+<td> kWH </td>
+</tr>
+</table>
+</div>
+
+
+</div>
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- <a class='meter' href="http://cems.iith.ac.in:3013/vvit/vvitmeterdata.html2"> Meter 2 </a>
+
+<a class='meter' href="http://cems.iith.ac.in:3013/vvit/vvitmeterdata.html3"> Meter 3 </a>
+
+<a class='meter' href="http://cems.iith.ac.in:3013/vvit/vvitmeterdata.html4"> Meter 4 </a>
+
+<a class='meter' href="http://cems.iith.ac.in:3013/vvit/vvitmeterdata.html5"> Meter 5 </a>
+
+<a class='meter' href="http://cems.iith.ac.in:3013/vvit/vvitmeterdata.html6"> Meter 6 </a>
+-->
+
+</div>
+
+
+
+</body>
+
+
+<script>
+var gnits_socket = io.connect();
+gnits_socket.on('gnits_meter_data', function(mdata){
+console.log(mdata)
+for(var rid in mdata) {
+document.getElementById('tstamp'+rid).innerHTML=moment(mdata[rid].tstamp);
+document.getElementById('mid'+rid).innerHTML=mdata[rid].meter_ID;
+document.getElementById('SSname'+rid).innerHTML=mdata[rid].Area;
+
+document.getElementById('vr'+rid).innerHTML=mdata[rid].Vr;
+document.getElementById('vy'+rid).innerHTML=mdata[rid].Vy;
+document.getElementById('vb'+rid).innerHTML=mdata[rid].Vb;
+document.getElementById('va'+rid).innerHTML=mdata[rid].Va;
+
+document.getElementById('Ir'+rid).innerHTML=mdata[rid].Ir;
+document.getElementById('Iy'+rid).innerHTML=mdata[rid].Iy;
+document.getElementById('Ib'+rid).innerHTML=mdata[rid].Ib;
+document.getElementById('Ia'+rid).innerHTML=mdata[rid].It;
+
+document.getElementById('Pr'+rid).innerHTML=mdata[rid].Pr;
+document.getElementById('Py'+rid).innerHTML=mdata[rid].Py;
+document.getElementById('Pb'+rid).innerHTML=mdata[rid].Pb;
+document.getElementById('Pt'+rid).innerHTML=mdata[rid].Ptot;
+
+document.getElementById('Sr'+rid).innerHTML=mdata[rid].Sr;
+document.getElementById('Sy'+rid).innerHTML=mdata[rid].Sy;
+document.getElementById('Sb'+rid).innerHTML=mdata[rid].Sb;
+document.getElementById('St'+rid).innerHTML=mdata[rid].St;
+
+document.getElementById('PFr'+rid).innerHTML=mdata[rid].PFr;
+document.getElementById('PFy'+rid).innerHTML=mdata[rid].PFy;
+document.getElementById('PFb'+rid).innerHTML=mdata[rid].PFb;
+document.getElementById('PFa'+rid).innerHTML=mdata[rid].PFa;
+
+document.getElementById('Vry'+rid).innerHTML=mdata[rid].Vry;
+document.getElementById('Vyb'+rid).innerHTML=mdata[rid].Vyb;
+document.getElementById('Vbr'+rid).innerHTML=mdata[rid].Vbr;
+document.getElementById('VLa'+rid).innerHTML=mdata[rid].VLa;
+
+document.getElementById('freq'+rid).innerHTML=mdata[rid].freq;
+document.getElementById('cume'+rid).innerHTML=mdata[rid].Energy;
+}
+});
+</script>
+
+
+
+
+
+</html>

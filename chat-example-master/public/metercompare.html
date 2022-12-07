@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="">
+<head> <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Multi Campus Energy Monitoring System</title>
+<style>
+
+.dbutton {
+transition-duration: 0.4s;
+  border-radius: 4px;
+   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+   height:28px;
+}
+.jumbo{
+align:center;
+background-color:#ffffd4;
+height:80px;
+text-align:center;
+text-top:100px;
+}
+.select{
+padding-top:20px;
+}
+.drop{
+transition-duration: 0.4s;
+  border-radius: 4px;
+width:180px;
+ height:30px ;
+
+}
+
+</style>
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+crossorigin="anonymous">
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<link href="dist/css/flat-ui.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-metro.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-win8.css">
+<body onload="setday()">
+<div class="container">
+    <div class="row">
+      <div class="jumbo w3-animate-right" align="center" >
+        <h2 class="select" >Meter Historic Data for a Day</h2>
+		
+      </div>
+    </div>
+	</div>
+	<br>
+		<br>
+	<center>
+<i class="fa fa-2x fa-calendar-plus-o" aria-hidden="true"  style="padding-right:8px" height="800px"></i><input id="d1" class="dbutton" type="date" min= "2020-01-01"/>
+	   &nbsp&nbsp&nbsp&nbsp&nbsp
+	   <i class="fa fa-2x fa-plug" aria-hidden="true" style="padding-right:8px" height="800px"></i>
+		 <select name="m1" id="mnth" placeholder="Month1" class="drop" ">
+     <option value="2">Meter2</option>
+    <option value="3">Meter3</option>
+    <option value="4" >Meter4</option>
+	<option value="5">Meter5</option>
+	<option value="6">Meter6</option>
+	<option value="7">Meter7</option>
+	<option value="8">Meter8</option>
+	<option value="9">Meter9</option>
+	<option value="10">Meter10</option>
+	<option value="11">Meter11</option>
+
+  </select>
+  </center>
+
+</center>
+<script>
+function setday()
+{
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+today = yyyy+'-'+ mm + '-' + dd;
+
+document.getElementById("d1").value=today;
+document.getElementById("d1").max=today;
+
+}
+
+
+</script>
+
+</html>

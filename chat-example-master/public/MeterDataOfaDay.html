@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="">
+<head> <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> GNITS Campus Energy Monitoring System</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+crossorigin="anonymous">
+
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+}
+.dbutton {
+transition-duration: 0.4s;
+  border-radius: 4px;
+   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+   height:28px;
+}
+.jumbo{
+align:center;
+background-color:#ffffd4;
+height:80px;
+text-align:center;
+text-top:100px;
+}
+.select{
+padding-top:20px;
+}
+.drop{
+transition-duration: 0.4s;
+  border-radius: 4px;
+width:180px;
+ height:30px ;
+
+}
+</style>
+
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-metro.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-win8.css">
+
+<body onload="setday()">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2">
+        <img src='/gnits.png' width="70%" >
+      </div>
+      <div class="col-sm-10" align="left">
+        <p style="padding-top: 10px">
+        <h2> Campus Energy Monitoring System </h2>
+          <p style="padding-top: 10px"> G. Narayanamma Institute of Technology and Science (GNITS)  </p>
+      </div>
+    </div>
+  </div>
+    <br>
+	<br>
+    <br>
+	<center>
+<i class="fa fa-2x fa-calendar-plus-o" aria-hidden="true"  style="padding-right:8px" height="800px"></i><input id="d1" class="dbutton" type="date" min= "2020-01-01"/>
+	   &nbsp&nbsp&nbsp&nbsp&nbsp
+	   <i class="fa fa-2x fa-plug" aria-hidden="true" style="padding-right:8px" height="800px"></i>
+		 <select name="m1" id="mnth" placeholder="Month1" class="drop dbutton" >
+     <option value="2">Meter2</option>
+    <option value="3">Meter3</option>
+    <option value="4" >Meter4</option>
+	<option value="5">Meter5</option>
+	<option value="6">Meter6</option>
+	<option value="7">Meter7</option>
+	<option value="8">Meter8</option>
+	<option value="9">Meter9</option>
+	<option value="10">Meter10</option>
+	<option value="11">Meter11</option>
+
+  </select>
+  </center>
+
+  <br>
+  <br>
+  <br>
+<div class="container">
+<p style="padding-top: 10px">  </p>
+
+<div class="row">
+
+   <canvas id="myChart2" width="1000" height="500"></canvas> 
+
+</div>
+
+</div>
+</body>
+
+
+
+<script>
+/*var gnits_socket = io.connect();
+gnits_socket.on('gnits_meter_data', function(mdata){
+console.log(mdata)
+//for(var 0 in mdata) {
+document.getElementById('tstamp').innerHTML=mdata[0].tstamp;
+document.getElementById('mid').innerHTML=mdata[0].meter_ID;
+document.getElementById('SSname').innerHTML=mdata[0].Area;
+
+document.getElementById('vr').innerHTML=mdata[0].Vr;
+document.getElementById('vy').innerHTML=mdata[0].Vy;
+document.getElementById('vb').innerHTML=mdata[0].Vb;
+document.getElementById('va').innerHTML=mdata[0].Va;
+
+document.getElementById('Ir').innerHTML=mdata[0].Ir;
+document.getElementById('Iy').innerHTML=mdata[0].Iy;
+document.getElementById('Ib').innerHTML=mdata[0].Ib;
+document.getElementById('Ia').innerHTML=mdata[0].It;
+
+document.getElementById('Pr').innerHTML=mdata[0].Pr;
+document.getElementById('Py').innerHTML=mdata[0].Py;
+document.getElementById('Pb').innerHTML=mdata[0].Pb;
+document.getElementById('Pt').innerHTML=mdata[0].Ptot;
+
+document.getElementById('Sr').innerHTML=mdata[0].Sr;
+document.getElementById('Sy').innerHTML=mdata[0].Sy;
+document.getElementById('Sb').innerHTML=mdata[0].Sb;
+document.getElementById('St').innerHTML=mdata[0].St;
+
+document.getElementById('PFr').innerHTML=mdata[0].PFr;
+document.getElementById('PFy').innerHTML=mdata[0].PFy;
+document.getElementById('PFb').innerHTML=mdata[0].PFb;
+document.getElementById('PFa').innerHTML=mdata[0].PFa;
+
+document.getElementById('Vry').innerHTML=mdata[0].Vry;
+document.getElementById('Vyb').innerHTML=mdata[0].Vyb;
+document.getElementById('Vbr').innerHTML=mdata[0].Vbr;
+document.getElementById('VLa').innerHTML=mdata[0].VLa;
+
+document.getElementById('freq').innerHTML=mdata[0].freq;
+document.getElementById('cume').innerHTML=mdata[0].Energy;
+//}
+});*/
+
+var plot_data = [];
+var socket_to_receive_data_for_plot = io.connect();
+var total_power=[];
+var total_power2=[];
+var time_stamp=[];
+var time_stamp1=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+data_lenght = 0;
+plot_width = 0;
+plot_height = 0;
+gaps = [50, 50, 30, 75];
+
+socket_to_receive_data_for_plot.on('a_block_history', function(data){
+data_lenght = Object.keys(data).length;
+console.log(data);
+for(i=0;i<data_lenght;i++){
+	//total_power[i]= parseFloat(data[i].total_p);
+	total_power[i]= parseFloat(data[i].Ptot);
+    total_power2[i]=total_power[i]*(0.5 + Math.random()*0.1);
+	//time_stamp[i]=data[i].tstamp.slice(11,16);
+	time_stamp[i]=data[i].tstamp;
+}
+plot_data=data[0].total_p;
+console.log('Client received data with latest time stamp as:');
+console.log(time_stamp[data_lenght-1]);
+console.log(total_power[data_lenght-1]);
+
+
+var myChart2 = document.getElementById('myChart2').getContext('2d');
+var plot_data_variable = {
+  type:'line', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+  data:{
+    labels:time_stamp1,
+    datasets:[{
+	  fill: false,
+      label:'Power in KW',
+      data: [1, 5, 20],
+      //backgroundColor:'green',
+      /*backgroundColor:[
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)'
+      ],*/
+	  backgroundColor: window.chartColors.red,
+	 // borderColor: window.chartColors.red,
+      borderWidth:1,
+      borderColor:'#000',
+      hoverBorderWidth:3,
+      hoverBorderColor:'#000'
+    }]
+  },
+  options:{
+    title:{
+      display:true,
+      text:'Meterwise Power Total',
+      fontSize:25
+    },
+	hover: {
+	  mode: 'nearest',
+	  intersect: true
+	},
+    legend:{
+      display:true,
+      //position:'right',
+      labels:{
+        fontColor:'#000'
+      }
+    },
+    layout:{
+      padding:{
+        left:0,
+        right:0,
+        bottom:0,
+        top:0
+      }
+    },
+    tooltips:{
+      enabled:true
+    },
+    scales:{
+	 xAxes: [{
+		display: true,
+		scaleLabel: {
+			display: true,
+			labelString: 'Time(in 24hrs clock)'
+			}
+		}],
+       yAxes: [{
+	   display: true,
+		scaleLabel: {
+			display: true,
+			labelString: 'Power consumed(in KW)'
+			},
+         ticks: {
+			suggestedMin: 0,
+			suggestedMax: 1,
+         }
+       }]
+	 
+    }
+
+
+
+   }
+ };
+ console.log(total_power);
+ plot_data_variable.data.datasets[0].data=total_power;
+
+ let massPopChart2 = new Chart(myChart2, plot_data_variable);
+});
+</script>
+
+
+
+
+</html>
